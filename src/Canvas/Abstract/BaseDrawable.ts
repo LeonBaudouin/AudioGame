@@ -26,4 +26,8 @@ export class BaseDrawable implements DrawableInterface {
             controller => this.currentState = controller.Update(this.currentState, this.defaultState)
         )
     }
+
+    public getState(): StateObjectInterface {
+        return this.currentState
+    }
 }

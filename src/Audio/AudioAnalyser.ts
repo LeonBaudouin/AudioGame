@@ -31,7 +31,6 @@ export class AudioAnalyser
     {
         this.analyser.getFloatTimeDomainData(this.dataArray)
         this.value = AutoCorrelate(this.dataArray, this.ctx.sampleRate)
-        console.log(this.value)
         this.buffer.push(this.value)
         if (this.buffer.length > AudioAnalyser.VALUE_BUFFER_LENGHT) this.buffer.shift()
     }
