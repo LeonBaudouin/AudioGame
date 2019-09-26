@@ -21,7 +21,6 @@ export class Canvas {
         this.globalController = globalController;
         this.htmlElement = htmlElement;
         this.context = context;
-        this.Loop();
         this.Resize();
     }
 
@@ -44,8 +43,6 @@ export class Canvas {
         this.drawnObjects.forEach(element => {
             element.Draw(this.context);
         });
-
-        requestAnimationFrame(() => this.Loop());
     }
 
     public static getSize() : Size {

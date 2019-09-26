@@ -1,7 +1,10 @@
+import { EventProvider } from "./Canvas/Events/EventProvider"
+
 export class Player {
 
     private life: number
     private maxLife: number
+    public onDie: Function
 
     constructor(life: number) {
         this.life = life
@@ -9,18 +12,26 @@ export class Player {
     }
 
     public takeDamage(damage: number) {
-        this.life = damage > this.life ? 0 : this.life -= damage 
+        this.setLife(this.getLife() - damage)
+        EventProvider.dispatch('player damaged')
     }
 
-    public isDead() {
+    public isDead(): boolean {
         return this.life <= 0
     }
 
-    public getLife() {
+    public getLife(): number {
         return this.life
     }
 
-    public getMaxLife() {
+    public getMaxLife(): number {
         return this.maxLife
+    }
+
+    public setLife(newLife: number) {
+        if (newLife < 0) this.life = 0
+        else if (newLife > this.getMaxLife()) this.life = this.getMaxLife()
+        else this.life = newLife
+        if (this.isDead() && this.onDie) this.onDie()
     }
 }

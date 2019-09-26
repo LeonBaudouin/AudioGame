@@ -1,5 +1,5 @@
-import { RendererInterface } from "../Abstract/RendererInterface";
-import { FillRectState } from "./FillRectState";
+import { RendererInterface } from "../../Abstract/RendererInterface";
+import { FillRectState } from "../FillRectState";
 
 export class FillRectRenderer implements RendererInterface {
 

@@ -1,5 +1,5 @@
 import { SimpleEventListener, ListenEvent, NativeEventListener } from "./SimpleEventListener";
-import { Point } from "../../CustomTypes/Point";
+import { Point } from "../../../CustomTypes/Point";
 
 export class MouseMoveListener extends NativeEventListener {
 

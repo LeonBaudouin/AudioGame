@@ -1,5 +1,6 @@
 import { CanvasSetup } from './Canvas/CanvasSetup'
 import { AudioAnalyser } from './Audio/AudioAnalyser'
+import { Game } from './Game'
 
 const BaseAudioContext = window.AudioContext || window.webkitAudioContext
 const audioCtx = new BaseAudioContext()
@@ -21,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .getUserMedia(mediaConfig)
     .then(stream => {
       new AudioAnalyser(audioCtx.createMediaStreamSource(stream), audioCtx)
-      CanvasSetup()
+      new Game()
     })
 })
 // tremolo
