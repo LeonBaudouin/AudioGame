@@ -4,9 +4,9 @@ import { Size } from "../../../CustomTypes/Size";
 
 export class ImageRenderer implements RendererInterface {
 
-    private image: HTMLImageElement
-    private fit: (size: Size) => Size
-    private scale: number
+    protected image: HTMLImageElement
+    protected fit: (size: Size) => Size
+    protected scale: number
 
     constructor({image, fit, scale} : {image: HTMLImageElement, fit: Fit, scale: number}) {
         this.image = image

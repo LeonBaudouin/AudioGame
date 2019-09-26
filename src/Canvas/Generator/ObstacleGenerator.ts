@@ -25,6 +25,7 @@ export class ObstacleGenerator implements GeneratorInterface {
     }
 
     public Generate(): DrawableInterface {
+        this.scrollSpeed += 0.001
         if (this.lastRect == null || (this.lastRect != null && (<FillRectState>this.lastRect.getState()).position.y > -10)) {
             this.lastRect = new BaseDrawable(
                 new FillRectState({
@@ -35,8 +36,9 @@ export class ObstacleGenerator implements GeneratorInterface {
                 new ImageRenderer({
                     image: makeImage('./assets/asteroid.png'),
                     fit: Fit.stretch,
-                    scale: 1.3
+                    scale: 1.2
                 }),
+                ['obstacle', 'game_element'],
                 [
                     new TimeMovement({
                         movementVector: {x: 0, y: this.scrollSpeed}
@@ -71,8 +73,17 @@ export class ObstacleGenerator implements GeneratorInterface {
     }
 
     public Remove(drawables: DrawableInterface[]) {
-        if (drawables.length > 20) return drawables.slice(1)
-        return drawables
+        const {removed, kept} = drawables.reduce((acc, drawable) => {
+            const {y} = (<FillRectState>(<BaseDrawable>drawable).getState()).position
+            if (y > window.innerHeight) {
+                acc.removed.push(drawable)
+                drawable.desactivate()
+            } else {
+                acc.kept.push(drawable)
+            }
+            return acc
+        }, {removed: [], kept: []})
+        return kept
     }
 
 }

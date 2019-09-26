@@ -11,9 +11,9 @@ export class EventProvider {
         }
     }
     
-    public static dispatch(eventName: string) {
+    public static dispatch(eventName: string, data: any = 'no data') {
         if (EventProvider.eventMap.has(eventName)) {
-            EventProvider.eventMap.get(eventName).forEach(cb => {cb()})
+            EventProvider.eventMap.get(eventName).forEach(cb => {data === 'no data' ? cb() : cb(data)})
         }
     }
 

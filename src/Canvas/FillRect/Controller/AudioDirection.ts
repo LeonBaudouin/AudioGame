@@ -14,12 +14,11 @@ export class AudioDirection implements ControllerInterface {
         this.maxFrequency = maxFrequency
         this.minFrequency = minFrequency
         this.direction = direction
-        this.audioAnalyser = AudioAnalyser.getInstance()
     }
 
     public Update(currentState: FillRectState, defaultState: FillRectState): FillRectState {
         const newState = currentState.Clone()
-        this.audioAnalyser.updateValue()
+        this.getAudioAnalyser().updateValue()
         if (this.doesValueMatch(this.audioAnalyser.getBuffer())) {
             newState.position = {
                 x: newState.position.x + this.direction.x,
@@ -33,6 +32,14 @@ export class AudioDirection implements ControllerInterface {
     private doesValueMatch(buffer: number[]) : boolean
     {
         return buffer.filter(frequency => frequency > this.minFrequency && frequency < this.maxFrequency).length > 0.75 * buffer.length
+    }
+
+    private getAudioAnalyser() : AudioAnalyser
+    {
+        if (this.audioAnalyser == null) {
+            this.audioAnalyser = AudioAnalyser.getInstance()
+        }
+        return this.audioAnalyser
     }
 
 }

@@ -2,7 +2,7 @@ import { ListenEvent } from "./SimpleEventListener";
 
 export class HoverElementListener implements ListenEvent {
 
-    private static instances : Map<string, HoverElementListener>;
+    private static instances : Map<string, HoverElementListener> = new Map()
 
     private elements : Element[];
 
@@ -17,9 +17,6 @@ export class HoverElementListener implements ListenEvent {
     }
 
     public static getInstance(selector: string) : HoverElementListener {
-        if (HoverElementListener.instances == null) {
-            HoverElementListener.instances = new Map<string,HoverElementListener>();
-        }
         if (!HoverElementListener.instances.has(selector)) {
             HoverElementListener.instances.set(selector, new HoverElementListener(selector))
         }
