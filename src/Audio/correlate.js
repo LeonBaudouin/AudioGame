@@ -1,5 +1,5 @@
 var MIN_SAMPLES = 0;  // will be initialized when AudioContext is created.
-var GOOD_ENOUGH_CORRELATION = 0.9; // this is the "bar" for how close a correlation needs to be
+var GOOD_ENOUGH_CORRELATION = 0.8; // this is the "bar" for how close a correlation needs to be
 
 export default function ( buf, sampleRate ) {
 	var SIZE = buf.length;

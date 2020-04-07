@@ -1,10 +1,11 @@
-import { ListenEvent, NativeEventListener } from "./SimpleEventListener";
+import { ListenEvent, NativeEventListener, SimpleEventListener } from "./SimpleEventListener";
 import { Point } from "../../../CustomTypes/Point";
 
-export class ClickListener extends NativeEventListener {
+export class ClickListener extends SimpleEventListener {
 
     protected static instance: ClickListener;
     protected static value: ClickValue = {x: 0, y: 0, timestamp: 0};
+    protected callbacks: Function[] = []
 
     public static getInstance(): ListenEvent {
         if(ClickListener.instance == null)
@@ -13,8 +14,14 @@ export class ClickListener extends NativeEventListener {
         return ClickListener.instance;
     }
 
-    private constructor() {
-        super("click");
+    constructor() {
+        super()
+        window.addEventListener('click', (e) => this.onEvent(e))
+    }
+
+    protected onEvent(e: MouseEvent) {
+        this.UpdateValue(e)
+        this.callbacks.forEach(cb => cb(e))
     }
 
     public getValue() {
@@ -22,8 +29,11 @@ export class ClickListener extends NativeEventListener {
     }
 
     public UpdateValue(e: MouseEvent) {
-        console.log(e.timeStamp)
         ClickListener.value = {x: e.clientX, y: e.clientY, timestamp: Date.now()}
+    }
+
+    public addCallack(f: Function) {
+        this.callbacks.push(f)
     }
 
 }

@@ -15,7 +15,6 @@ export class PlayerIconRenderer extends ImageRenderer {
     }
 
     private changeIcon(name: string) {
-        console.log(name)
         this.image = makeImage(`./assets/${name}`)
     }
 

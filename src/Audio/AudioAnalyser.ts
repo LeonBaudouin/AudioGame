@@ -46,9 +46,9 @@ export class AudioAnalyser
         return this.buffer
     }
 
-    public static getInstance() : AudioAnalyser
+    public static getInstance() : AudioAnalyser|null
     {
-        if (!AudioAnalyser.instance) throw "Init an audio analyser first"
+        if (!AudioAnalyser.instance) return null
         return AudioAnalyser.instance
     }
 }

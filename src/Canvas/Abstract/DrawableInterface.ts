@@ -7,7 +7,7 @@ export interface DrawableInterface {
     isVisible() : boolean;
     hide() : void;
     show() : void;
-    isActive(): boolean
-    desactivate(): void
-    activate(): void
+    isActive(): boolean;
+    desactivate(): void;
+    activate(): void;
 }

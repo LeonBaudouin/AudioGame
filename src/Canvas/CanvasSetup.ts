@@ -21,6 +21,10 @@ import { EventProvider } from "./Events/EventProvider";
 import { PlayerIconRenderer } from "./FillRect/Renderer/PlayerIconRenderer";
 import { ButtonRenderer } from "./FillRect/Renderer/ButtonRenderer";
 import { Score } from "./SimpleText/Controller/Score";
+import { SoundBarRenderer } from "./FillRect/Renderer/SoundBarRenderer";
+import { AudioPosition } from "./FillRect/Controller/AudioPosition";
+import { AudioAnalyser } from "../Audio/AudioAnalyser";
+import { UpdateAudio } from "./GlobalController/UpdateAudio";
 
 
 export function CanvasSetup(player: Player) {
@@ -73,14 +77,14 @@ export function CanvasSetup(player: Player) {
             ['player', 'game_element'],
             [
                 new AudioDirection({
-                    direction: {x: window.innerWidth/50, y: 0},
-                    minFrequency: 100,
-                    maxFrequency: 500
+                    direction: {x: -window.innerWidth/50, y: 0},
+                    minFrequency: 80,
+                    maxFrequency: 1400
                 }),
                 new AudioDirection({
-                    direction: {x: -window.innerWidth/50, y: 0},
-                    minFrequency: 700,
-                    maxFrequency: 1200
+                    direction: {x: window.innerWidth/50, y: 0},
+                    minFrequency: 1800,
+                    maxFrequency: 4500
                 }),
                 new PositionConstraint({
                     upperLeft: {x: 20, y: 20},
@@ -153,10 +157,10 @@ export function CanvasSetup(player: Player) {
             [new Score()],
             false, true, false
         ),
-        // Start button
+        // Restart button
         new BaseDrawable(
             new FillRectState({
-                position: {x: window.innerWidth / 2 - 100, y: window.innerHeight / 2 + 120},
+                position: {x: window.innerWidth / 2 + 50, y: window.innerHeight / 2 + 120},
                 size: {width: 200, height: 50},
                 style: '#6ac6fbe0'
             }),
@@ -166,7 +170,25 @@ export function CanvasSetup(player: Player) {
             ['try_again', 'end_menu'],
             [
                 new CallBackClick({
-                    callback: () => console.log('slt')
+                    callback: () =>window.location.reload(false)
+                })
+            ],
+            false, true, false
+        ),
+        // Save button
+        new BaseDrawable(
+            new FillRectState({
+                position: {x: window.innerWidth / 2 - 250, y: window.innerHeight / 2 + 120},
+                size: {width: 200, height: 50},
+                style: '#6ac6fbe0'
+            }),
+            new ButtonRenderer({
+                content: 'Save score'
+            }),
+            ['try_again', 'end_menu'],
+            [
+                new CallBackClick({
+                    callback: () => EventProvider.dispatch('save_score')
                 })
             ],
             false, true, false
@@ -280,7 +302,7 @@ export function CanvasSetup(player: Player) {
         // Start button
         new BaseDrawable(
             new FillRectState({
-                position: {x: window.innerWidth / 2 - 100, y: window.innerHeight / 2 + 120},
+                position: {x: window.innerWidth / 2 - 175, y: window.innerHeight / 2 + 120},
                 size: {width: 200, height: 50},
                 style: '#6ac6fbe0'
             }),
@@ -293,10 +315,58 @@ export function CanvasSetup(player: Player) {
                     callback: () => EventProvider.dispatch('start_game')
                 })
             ]
+        ),
+        // Test button
+        new BaseDrawable(
+            new FillRectState({
+                position: {x: window.innerWidth / 2 + 75, y: window.innerHeight / 2 + 120},
+                size: {width: 100, height: 50},
+                style: '#6ac6fbe0'
+            }),
+            new ButtonRenderer({
+                content: 'Test'
+            }),
+            ['start_button', 'start_menu'],
+            [
+                new CallBackClick({
+                    callback: () => EventProvider.dispatch('test_sound')
+                })
+            ]
+        ),
+        // Sound Bar
+        new BaseDrawable(
+            new FillRectState({
+                size: {width: window.innerWidth - 100, height: 20},
+                position: {x: window.innerWidth / 2 - (window.innerWidth - 100) / 2, y: window.innerHeight - 40},
+                style: '#ffffff4a'
+            }),
+            new SoundBarRenderer({
+                lowerInterval: {min: 80, max: 1400},
+                higherInterval: {min: 1800, max: 4500},
+                overallInterval: {min: 0, max: 5000},
+            }),
+            ['sound_bar']
+        ),
+        // Sound Cursor
+        new BaseDrawable(
+            new FillRectState({
+                size: {width: 10, height: 20},
+                position: {x: window.innerWidth / 2, y: window.innerHeight - 40},
+                style: '#ff0000b5'
+            }),
+            new FillRectRenderer(),
+            ['sound_cursor'],
+            [
+                new AudioPosition({
+                    frequencyInterval: {min: 0, max: 5000},
+                    xInterval: {min: window.innerWidth / 2 - (window.innerWidth - 100) / 2, max: window.innerWidth / 2 + (window.innerWidth - 100) / 2}
+                })
+            ],
+            true
         )
     ]
 
-    return new Canvas(drawnObject, htmlCanvas, context, [rectCollisionLayer]);
+    return new Canvas(drawnObject, htmlCanvas, context, [rectCollisionLayer, new UpdateAudio()]);
 }
 
 export function generateRadialGradient(gradientData: RadialGradientData, context: CanvasRenderingContext2D) {

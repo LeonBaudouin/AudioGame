@@ -18,8 +18,7 @@ export class AudioDirection implements ControllerInterface {
 
     public Update(currentState: FillRectState, defaultState: FillRectState): FillRectState {
         const newState = currentState.Clone()
-        this.getAudioAnalyser().updateValue()
-        if (this.doesValueMatch(this.audioAnalyser.getBuffer())) {
+        if (this.doesValueMatch(this.getAudioAnalyser().getBuffer())) {
             newState.position = {
                 x: newState.position.x + this.direction.x,
                 y: newState.position.y + this.direction.y
